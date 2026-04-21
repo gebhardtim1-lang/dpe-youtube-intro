@@ -4,9 +4,21 @@ AI-assisted motion graphics pipeline for Peter Holmquist's Driven Publishers You
 
 ## Quick Start
 
-**Freelancer:** open [`INSTRUCTIONS.html`](./INSTRUCTIONS.html) in your browser. Everything you need is there.
+**Freelancer (non-coder path):**
+1. Install Claude Code: https://claude.com/claude-code
+2. Open a fresh chat, paste this prompt:
 
-**Tim / maintainer:** the pattern and brand tokens live in [`brand/brand.md`](./brand/brand.md). Skills that drive the workflow live in [`skills/`](./skills/). The HTML template Claude Code generates from lives in [`template/`](./template/).
+   ```
+   Set up the DPE YouTube intro toolkit. Read and follow the instructions at:
+   https://raw.githubusercontent.com/gebhardtim1-lang/dpe-youtube-intro/main/BOOTSTRAP.md
+
+   Walk me through each step in plain English. Ask me what I need to answer
+   (install location, API key), and handle the rest yourself.
+   ```
+
+3. Claude handles the rest. Full guide: [`INSTRUCTIONS.html`](https://gebhardtim1-lang.github.io/dpe-youtube-intro/INSTRUCTIONS.html)
+
+**Tim / maintainer:** brand tokens in [`brand/brand.md`](./brand/brand.md). Skills in [`.claude/skills/`](./.claude/skills/). Template in [`template/`](./template/). Install orchestration in [`BOOTSTRAP.md`](./BOOTSTRAP.md).
 
 ## What it produces
 

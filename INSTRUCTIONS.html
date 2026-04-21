@@ -554,8 +554,7 @@
       <section id="setup">
         <h2><span class="step-num">2</span>One-time setup</h2>
         <p class="lede">
-          Do this <strong>once</strong>, the first time you join the team. It takes about
-          15 minutes. After this, every new intro takes about 5 minutes.
+          Two manual actions. Everything else is automatic.
         </p>
 
         <div class="callout warning">
@@ -571,68 +570,25 @@
             <div class="step-title">Install Claude Code</div>
             <p>Claude Code is the AI assistant you'll talk to. Download and install from:</p>
             <p><a href="https://claude.com/claude-code" target="_blank">https://claude.com/claude-code</a></p>
-            <p>Follow the installer. On first launch, it will ask you to log in with your Anthropic account. (Tim will set up your account or cover the subscription.)</p>
+            <p>Follow the installer. On first launch, log in with your Anthropic account. (Tim will cover the subscription.)</p>
           </li>
 
           <li>
-            <div class="step-title">Install Node.js</div>
-            <p>Node.js is the runtime that Hyperframes (the video renderer) and the transcription script run on. Go to:</p>
-            <p><a href="https://nodejs.org/en/download" target="_blank">https://nodejs.org/en/download</a></p>
-            <p>Download the <strong>LTS</strong> version (large green button). Run the installer with default options. <strong>Restart your terminal / Claude Code after install.</strong></p>
-            <p>To verify, open Claude Code and type in the terminal:</p>
-            <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>node --version</code></pre>
-            <p>You should see something like <code class="inline-code">v22.x.x</code> or higher.</p>
-          </li>
+            <div class="step-title">Open a fresh chat in Claude Code and paste this prompt</div>
+            <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>Set up the DPE YouTube intro toolkit. Read and follow the instructions at:
+https://raw.githubusercontent.com/gebhardtim1-lang/dpe-youtube-intro/main/BOOTSTRAP.md
 
-          <li>
-            <div class="step-title">Install FFmpeg</div>
-            <p>FFmpeg is the video/audio processor. How you install depends on your operating system:</p>
+Walk me through each step in plain English. Ask me what I need to answer (install location, API key), and handle the rest yourself.</code></pre>
+            <p>That's it. Claude will now:</p>
             <ul>
-              <li><strong>Windows:</strong> Open PowerShell as Administrator and run <code class="inline-code">winget install Gyan.FFmpeg</code>. After install, close and reopen PowerShell.</li>
-              <li><strong>Mac:</strong> Install Homebrew if you haven't (<a href="https://brew.sh" target="_blank">brew.sh</a>), then <code class="inline-code">brew install ffmpeg</code></li>
-              <li><strong>Linux:</strong> <code class="inline-code">sudo apt install ffmpeg</code> (or equivalent for your distro)</li>
+              <li>Check if you have Node.js, FFmpeg, and git (guide you through installing any you're missing)</li>
+              <li>Ask where you want the toolkit installed (default: a folder called <code class="inline-code">dpe-youtube-intro</code> in your home directory)</li>
+              <li>Clone the repository and install Hyperframes + dependencies</li>
+              <li>Ask you for your OpenAI API key (needed for transcription — get one at <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a>, costs about $0.002 per intro)</li>
+              <li>Run a smoke test to make sure everything works</li>
+              <li>Tell you exactly what to do next</li>
             </ul>
-            <p>Verify with:</p>
-            <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>ffmpeg -version</code></pre>
-          </li>
-
-          <li>
-            <div class="step-title">Get the DPE intro toolkit</div>
-            <p>Clone this repository. Open a terminal in a folder where you keep your projects (e.g. <code class="inline-code">C:\Projects</code> on Windows, or <code class="inline-code">~/Projects</code> on Mac/Linux), then run:</p>
-            <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>git clone https://github.com/gebhardtim1-lang/dpe-youtube-intro.git
-cd dpe-youtube-intro</code></pre>
-            <p>If you don't have <strong>git</strong>, download it from <a href="https://git-scm.com/downloads" target="_blank">git-scm.com</a>, or just download the repo as a ZIP from GitHub and unzip it anywhere you like.</p>
-          </li>
-
-          <li>
-            <div class="step-title">Get an OpenAI API key</div>
-            <p>Needed for transcription. Roughly <span class="gold">$0.006</span> per minute of audio — about <span class="gold">$0.002</span> per 15-second intro (basically free).</p>
-            <p>Go to <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a>, sign in (or sign up), click <strong>"Create new secret key"</strong>, copy the key it shows you.</p>
-            <p>Inside your <code class="inline-code">dpe-youtube-intro</code> folder, make a copy of the file <code class="inline-code">.env.example</code> and rename the copy to <code class="inline-code">.env</code>. Open it in any text editor and replace the placeholder:</p>
-            <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>OPENAI_API_KEY=sk-paste-your-real-key-here</code></pre>
-            <p>Save. Done.</p>
-            <div class="callout danger">
-              <div class="callout-icon">!</div>
-              <div class="callout-body">
-                <div class="callout-title">Never share this key</div>
-                <div class="subtext">Anyone with the key can spend money on your OpenAI account. Keep <code class="inline-code">.env</code> out of emails, Slack, and screen shares. Git already ignores it by default.</div>
-              </div>
-            </div>
-          </li>
-
-          <li>
-            <div class="step-title">Run the install skill</div>
-            <p>Open Claude Code inside the <code class="inline-code">dpe-youtube-intro</code> folder. In the chat, type:</p>
-            <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>/dpe-intro-install</code></pre>
-            <p>Claude will:</p>
-            <ul>
-              <li>Double-check Node.js and FFmpeg are installed correctly</li>
-              <li>Install Hyperframes (the video renderer) — just say "yes" to any prompts</li>
-              <li>Install the npm packages the transcribe script needs</li>
-              <li>Scaffold a <code class="inline-code">working/</code> folder you'll use per video</li>
-              <li>Run a quick smoke test to confirm everything works</li>
-            </ul>
-            <p>If anything fails, Claude will tell you how to fix it. Just read the message and follow instructions.</p>
+            <p>Whenever Claude asks for input, just answer in plain English. If anything goes wrong, Claude will diagnose and help you fix it. If it's really stuck, screenshot the error and message Tim.</p>
           </li>
         </ol>
 
@@ -641,6 +597,14 @@ cd dpe-youtube-intro</code></pre>
           <div class="callout-body">
             <div class="callout-title">You're done with setup</div>
             <div class="subtext">You'll never have to do this again. Every new intro from now on uses the per-video workflow below.</div>
+          </div>
+        </div>
+
+        <div class="callout danger">
+          <div class="callout-icon">!</div>
+          <div class="callout-body">
+            <div class="callout-title">Guard your API key</div>
+            <div class="subtext">Claude will store your OpenAI key in a hidden <code class="inline-code">.env</code> file in the toolkit folder. Never share that file — anyone with the key can spend money on your account. Git already ignores it by default.</div>
           </div>
         </div>
       </section>
@@ -679,15 +643,16 @@ cd dpe-youtube-intro</code></pre>
           </li>
 
           <li>
-            <div class="step-title">Open Claude Code in the dpe-youtube-intro folder</div>
-            <p>Open the <code class="inline-code">dpe-youtube-intro</code> folder in Claude Code. (Usually: File → Open Folder → pick it.)</p>
+            <div class="step-title">Open Claude Code in the toolkit folder, start a fresh chat</div>
+            <p>Open Claude Code. Use <strong>File → Open Folder</strong> and pick the <code class="inline-code">dpe-youtube-intro</code> folder where the toolkit got installed (default: your home folder). This loads the DPE skills so Claude knows how to make intros.</p>
+            <p>Start a <strong>new chat</strong> in that project.</p>
           </li>
 
           <li>
             <div class="step-title">Ask Claude to make the intro</div>
-            <p>In the chat, type:</p>
-            <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>/dpe-intro &quot;C:\path\to\your\exported-intro.mp4&quot;</code></pre>
-            <p>Use the real path to the clip you exported. <strong>Keep the quotes</strong> if the path has spaces.</p>
+            <p>Paste this into the chat (replace the path with your real clip path):</p>
+            <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>Make a DPE intro for &quot;C:\path\to\your\exported-intro.mp4&quot;</code></pre>
+            <p><strong>Keep the quotes</strong> if the path has spaces. On Mac/Linux use forward slashes: <code class="inline-code">/Users/you/path/to/clip.mp4</code>.</p>
             <p>Claude will now:</p>
             <ul>
               <li>Transcribe the clip with word-level timing (~30 seconds)</li>
