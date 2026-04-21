@@ -9,11 +9,13 @@ Generate a branded intro overlay for a raw Peter Holmquist talking-head clip. Sh
 
 ## Input
 
-A raw video file path. Usually 30-60 seconds of Peter talking directly to camera.
+A video file path. The freelancer exports this themselves from Peter's full raw YouTube recording — specifically the INTRO SECTION where Peter is on camera (before any screenshare starts). Typical duration: 12-25 seconds.
 
 Example invocations:
-- `/dpe-intro E:\Peter Client\new-video.mp4`
-- `create a DPE intro for E:\Peter Client\raw-take-02.mp4`
+- `/dpe-intro E:\DPE-Intros\raw\2026-04-22-peter-pitch.mp4`
+- `create a DPE intro for E:\path\intro-section.mp4`
+
+The input is NOT the full raw YouTube recording. If the clip looks like it contains screenshare footage, ask the freelancer to re-export just the on-camera section.
 
 ## Prerequisites
 

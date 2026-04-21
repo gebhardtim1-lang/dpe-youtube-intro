@@ -491,8 +491,9 @@
       <section id="what">
         <h2><span class="step-num">1</span>What you'll be doing</h2>
         <p class="lede">
-          Your job in one sentence: <strong>get a raw Peter clip, give it to Claude,
-          review the result, deliver the PNG sequence to Tim.</strong>
+          Your job in one sentence: <strong>find the intro section in Peter's raw video,
+          export it as a short clip, give it to Claude, review the result, deliver the
+          PNG sequence to Tim.</strong>
         </p>
 
         <div class="video-wrap">
@@ -507,8 +508,8 @@
         <h3>The full flow</h3>
         <div class="grid">
           <div class="card">
-            <div class="card-title">① Tim sends you a clip</div>
-            <div class="subtext">Raw Peter talking-head video, usually 15-60 seconds. Delivered via Google Drive or Dropbox.</div>
+            <div class="card-title">① You find the intro section</div>
+            <div class="subtext">Peter's raw YouTube video is in the shared drive. You identify the intro — the part where Peter is on camera (before any screenshare) and export it as a short MP4.</div>
           </div>
           <div class="card">
             <div class="card-title">② You run <code class="inline-code">/dpe-intro</code></div>
@@ -634,9 +635,25 @@ cd dpe-youtube-intro</code></pre>
 
         <ol class="steps">
           <li>
-            <div class="step-title">Get the raw clip from Tim</div>
-            <p>Tim sends you a link to a Google Drive / Dropbox file. Download it. Save to any folder you want — e.g. <code class="inline-code">C:\DPE-Intros\raw\</code>.</p>
-            <p>Name doesn't matter, but something memorable helps (e.g. <code class="inline-code">2026-04-22-peter-5m-pitch.mp4</code>).</p>
+            <div class="step-title">Find and export the intro section from the raw video</div>
+            <p>Peter's raw YouTube recording lives in the shared drive (Google Drive / Dropbox — Tim will tell you which folder). Download the full video.</p>
+            <p>Open it in Premiere (or any editor you prefer). Scrub through the start and find the <strong>intro section</strong> — the part where Peter is <strong>on camera</strong>, talking directly to the viewer, <em>before</em> he switches to a screenshare or slide deck. This is typically the first 30-90 seconds.</p>
+            <p>What makes a good intro section:</p>
+            <ul>
+              <li><strong>Peter is on camera</strong> (no screenshare, no slides) — you need his face for the overlay to composite over.</li>
+              <li><strong>Punchy content</strong> — numbers, revenue claims, bold statements ("$5 million", "10 years", "the #1 thing...") work well for kinetic text callouts.</li>
+              <li><strong>Bonus: a list.</strong> If Peter enumerates 3+ items ("struggles with X, Y, Z, W"), that triggers the full-screen list takeover — the most impactful part of the intro.</li>
+              <li><strong>Clean cut points</strong> — start just before he starts speaking (trim silent lead-in), end on a complete sentence.</li>
+              <li><strong>Duration: 12-18 seconds.</strong> Shorter feels rushed, longer loses punch.</li>
+            </ul>
+            <p>Export the intro section as an <strong>MP4, 1920×1080, H.264</strong>. Save it anywhere — e.g. <code class="inline-code">C:\DPE-Intros\raw\</code>. Name it memorably like <code class="inline-code">2026-04-22-peter-5m-pitch.mp4</code>.</p>
+            <div class="callout warning">
+              <div class="callout-icon">!</div>
+              <div class="callout-body">
+                <div class="callout-title">Don't worry about being exact</div>
+                <div class="subtext">A little extra silence at start/end is fine — Claude will trim it or splice out internal pauses automatically. The goal is to hand Claude a ~15-25s clip with Peter's best on-camera moment.</div>
+              </div>
+            </div>
           </li>
 
           <li>
@@ -647,8 +664,8 @@ cd dpe-youtube-intro</code></pre>
           <li>
             <div class="step-title">Ask Claude to make the intro</div>
             <p>In the chat, type:</p>
-            <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>/dpe-intro &quot;C:\path\to\your\raw-clip.mp4&quot;</code></pre>
-            <p>Use the real path to the clip you downloaded. <strong>Keep the quotes</strong> if the path has spaces.</p>
+            <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>/dpe-intro &quot;C:\path\to\your\exported-intro.mp4&quot;</code></pre>
+            <p>Use the real path to the clip you exported. <strong>Keep the quotes</strong> if the path has spaces.</p>
             <p>Claude will now:</p>
             <ul>
               <li>Transcribe the clip with word-level timing (~30 seconds)</li>
