@@ -1,0 +1,19 @@
+{
+  "name": "dpe-youtube-intro",
+  "version": "1.0.0",
+  "description": "AI-assisted branded YouTube intro generator for Driven Publishers Elite. Uses Claude Code + Hyperframes + OpenAI Whisper.",
+  "private": true,
+  "scripts": {
+    "transcribe": "node scripts/word-transcribe.js",
+    "lint": "cd working && npx hyperframes lint",
+    "preview": "cd working && npx hyperframes preview",
+    "render": "cd working && npx hyperframes render"
+  },
+  "dependencies": {
+    "minimist": "^1.2.8",
+    "openai": "^4.80.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

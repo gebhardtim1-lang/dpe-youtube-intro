@@ -1,0 +1,26 @@
+node_modules/
+.env
+.env.local
+
+# Work-in-progress folders
+working/
+outputs/
+renders/
+
+# Video/audio assets (too large for git)
+template/assets/*.mp4
+template/assets/*.mov
+template/assets/*.aac
+template/assets/*.mp3
+template/assets/*.wav
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log
+*.swp
+.vscode/
+.idea/
+
+# Hyperframes cache
+.hyperframes-cache/

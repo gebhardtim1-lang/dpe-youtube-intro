@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;0,900;1,900&family=Open+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #000;
+        font-family: 'Open Sans', sans-serif;
+      }
+
+      .bg-video {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        object-fit: cover;
+      }
+
+      /* ======== HUD (Phase 1: 0-7.5s) ======== */
+      .vignette {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at center, transparent 45%, rgba(5,5,8,0.65) 100%);
+        pointer-events: none;
+      }
+      .blueprint-grid-bg {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(0,194,255,0.10) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0,194,255,0.10) 1px, transparent 1px);
+        background-size: 80px 80px;
+        pointer-events: none;
+      }
+      .accent-bar {
+        position: absolute;
+        left: 0;
+        width: 1920px;
+        height: 4px;
+        background: linear-gradient(90deg, transparent 0%, #00C2FF 20%, #00E5FF 50%, #00C2FF 80%, transparent 100%);
+        box-shadow: 0 0 20px rgba(0,194,255,0.6);
+        transform-origin: center;
+      }
+      .accent-top { top: 0; }
+      .accent-bottom { bottom: 0; }
+
+      .wordmark {
+        position: absolute;
+        top: 48px;
+        left: 48px;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 700;
+        font-size: 22px;
+        color: rgba(255,255,255,0.88);
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+      }
+      .wordmark-dot {
+        width: 10px;
+        height: 10px;
+        background: #00C2FF;
+        border-radius: 50%;
+        box-shadow: 0 0 14px #00C2FF, 0 0 6px #00E5FF;
+      }
+
+      /* ======== KINETIC PHRASES (Phase 1) ======== */
+      .phrase {
+        position: absolute;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 900;
+        text-transform: uppercase;
+        color: #fff;
+        white-space: nowrap;
+      }
+
+      .phrase-lessons {
+        bottom: 170px;
+        left: 80px;
+        font-size: 96px;
+        letter-spacing: -2px;
+        font-style: italic;
+        text-shadow: 0 4px 24px rgba(0,0,0,0.7);
+      }
+      .phrase-lessons .underline {
+        position: absolute;
+        bottom: -14px;
+        left: 0;
+        height: 6px;
+        width: 100%;
+        background: linear-gradient(90deg, #00C2FF 0%, #00E5FF 100%);
+        box-shadow: 0 0 20px rgba(0,194,255,0.9);
+        transform-origin: left center;
+      }
+
+      .phrase-money-wrap {
+        position: absolute;
+        bottom: 180px;
+        left: 0;
+        width: 1920px;
+        text-align: center;
+      }
+      .phrase-money {
+        display: inline-block;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 900;
+        font-size: 260px;
+        letter-spacing: -10px;
+        background: linear-gradient(165deg, #F5A623 0%, #F08912 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        filter: drop-shadow(0 8px 40px rgba(245,166,35,0.55));
+      }
+      .phrase-money-sub {
+        display: block;
+        margin-top: 4px;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 700;
+        font-size: 32px;
+        letter-spacing: 10px;
+        color: rgba(255,255,255,0.9);
+        text-shadow: 0 2px 14px rgba(0,0,0,0.85);
+      }
+
+      .phrase-kdp {
+        bottom: 200px;
+        right: 80px;
+        font-size: 78px;
+        letter-spacing: -1px;
+        background: rgba(0,194,255,0.15);
+        border: 2px solid #00C2FF;
+        padding: 20px 40px;
+        box-shadow: 0 0 40px rgba(0,194,255,0.5), inset 0 0 20px rgba(0,194,255,0.2);
+        color: #fff;
+      }
+
+      .phrase-book-wrap {
+        position: absolute;
+        bottom: 160px;
+        left: 0;
+        width: 1920px;
+        text-align: center;
+      }
+      .phrase-book {
+        display: inline-block;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 900;
+        font-size: 140px;
+        letter-spacing: -3px;
+        background: linear-gradient(165deg, #F5A623 0%, #F08912 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        filter: drop-shadow(0 6px 30px rgba(245,166,35,0.45));
+      }
+      .phrase-book-accent {
+        display: inline-block;
+        width: 160px;
+        height: 4px;
+        background: linear-gradient(90deg, transparent, #00C2FF, transparent);
+        margin: 16px auto 0;
+        box-shadow: 0 0 14px rgba(0,194,255,0.9);
+      }
+
+      .particles {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+      .particle {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: #F5A623;
+        border-radius: 50%;
+        box-shadow: 0 0 12px #F5A623, 0 0 4px #FFD966;
+      }
+
+      /* ======== FULL-SCREEN LIST PANEL (Phase 2: 7.5-17.5s) ======== */
+      .list-panel {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(ellipse at center, #0a1a2e 0%, #050508 75%),
+          linear-gradient(180deg, #050508, #050508);
+      }
+      .list-panel-grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(0,194,255,0.15) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0,194,255,0.15) 1px, transparent 1px);
+        background-size: 80px 80px;
+        pointer-events: none;
+      }
+      .list-title-wrap {
+        position: absolute;
+        top: 120px;
+        left: 0;
+        width: 1920px;
+        text-align: center;
+      }
+      .list-title-pre {
+        display: block;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 700;
+        font-size: 28px;
+        letter-spacing: 12px;
+        color: #00C2FF;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+      }
+      .list-title-main {
+        display: inline-block;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 900;
+        font-size: 120px;
+        letter-spacing: -4px;
+        text-transform: uppercase;
+        color: #fff;
+        line-height: 1;
+        text-shadow: 0 0 40px rgba(0,194,255,0.4);
+      }
+      .list-title-accent {
+        color: #00C2FF;
+      }
+      .list-subtitle {
+        display: block;
+        margin-top: 18px;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 400;
+        font-size: 34px;
+        letter-spacing: 3px;
+        color: rgba(255,255,255,0.78);
+        text-transform: uppercase;
+      }
+
+      .list-items {
+        position: absolute;
+        top: 470px;
+        left: 0;
+        width: 1920px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+      }
+      .list-item {
+        display: flex;
+        align-items: center;
+        gap: 36px;
+        width: 1300px;
+        padding: 22px 38px;
+        background: rgba(255,255,255,0.03);
+        border-left: 4px solid #00C2FF;
+      }
+      .list-item-bullet {
+        flex-shrink: 0;
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background: rgba(245,70,70,0.15);
+        border: 3px solid #FF4444;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #FF4444;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 900;
+        font-size: 30px;
+        line-height: 1;
+        box-shadow: 0 0 20px rgba(255,68,68,0.4);
+      }
+      .list-item-text {
+        flex: 1;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 900;
+        font-size: 54px;
+        letter-spacing: -1px;
+        text-transform: uppercase;
+        color: #fff;
+        text-shadow: 0 2px 14px rgba(0,0,0,0.8);
+        white-space: nowrap;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="17.5"
+      data-width="1920"
+      data-height="1080"
+    >
+      <!-- Peter video (track 0) -->
+      <video
+        id="bg-video"
+        class="clip bg-video"
+        data-start="0"
+        data-duration="17.5"
+        data-track-index="0"
+        muted
+        src="assets/peter.mp4"
+      ></video>
+      <!-- Peter audio (track 1) -->
+      <audio
+        id="bg-audio"
+        class="clip"
+        data-start="0"
+        data-duration="17.5"
+        data-track-index="1"
+        data-volume="1.0"
+        src="assets/peter.aac"
+      ></audio>
+
+      <!-- ========= PHASE 1 HUD (0-7.5s) ========= -->
+      <div id="vignette" class="clip vignette"
+           data-start="0" data-duration="7.5" data-track-index="2"></div>
+      <div id="blueprint-grid-bg" class="clip blueprint-grid-bg"
+           data-start="0" data-duration="7.5" data-track-index="3"></div>
+      <div id="accent-top" class="clip accent-bar accent-top"
+           data-start="0" data-duration="7.5" data-track-index="4"></div>
+      <div id="accent-bottom" class="clip accent-bar accent-bottom"
+           data-start="0" data-duration="7.5" data-track-index="5"></div>
+      <div id="wordmark" class="clip wordmark"
+           data-start="0" data-duration="7.5" data-track-index="6">
+        <span class="wordmark-dot"></span>DRIVEN PUBLISHERS ELITE
+      </div>
+
+      <!-- ========= PHASE 1 KINETIC PHRASES (word-synced) ========= -->
+      <!-- "Lessons from a decade" — Peter: 0.00-2.24s -->
+      <div id="phrase-lessons" class="clip phrase phrase-lessons"
+           data-start="0" data-duration="2.7" data-track-index="7">
+        Lessons from a decade
+        <span class="underline" id="phrase-lessons-underline"></span>
+      </div>
+
+      <!-- "$5 Million" hero — Peter says "5 million" 2.74-3.22s -->
+      <div id="phrase-money-wrap" class="clip phrase-money-wrap"
+           data-start="2.55" data-duration="1.70" data-track-index="8">
+        <span class="phrase-money" id="phrase-money">$5 Million</span>
+        <span class="phrase-money-sub" id="phrase-money-sub">ON AMAZON KDP</span>
+      </div>
+      <div id="particles-money" class="clip particles"
+           data-start="2.55" data-duration="1.70" data-track-index="9">
+        <div class="particle" style="top: 32%; left: 28%"></div>
+        <div class="particle" style="top: 38%; left: 72%"></div>
+        <div class="particle" style="top: 26%; left: 45%"></div>
+        <div class="particle" style="top: 55%; left: 18%"></div>
+        <div class="particle" style="top: 58%; left: 82%"></div>
+        <div class="particle" style="top: 70%; left: 38%"></div>
+        <div class="particle" style="top: 72%; left: 62%"></div>
+        <div class="particle" style="top: 45%; left: 55%"></div>
+      </div>
+
+      <!-- "Amazon KDP" chip — Peter: 3.92-4.84s -->
+      <div id="phrase-kdp" class="clip phrase phrase-kdp"
+           data-start="3.75" data-duration="1.60" data-track-index="10">
+        Amazon KDP
+      </div>
+
+      <!-- "Into one book" closer — Peter: 5.58-6.86s -->
+      <div id="phrase-book-wrap" class="clip phrase-book-wrap"
+           data-start="5.40" data-duration="2.05" data-track-index="11">
+        <span class="phrase-book" id="phrase-book">Into one book</span>
+        <span class="phrase-book-accent" id="phrase-book-accent"></span>
+      </div>
+
+      <!-- ========= PHASE 2 FULL-SCREEN LIST (7.5-17.5s) ========= -->
+      <div id="list-panel" class="clip list-panel"
+           data-start="7.5" data-duration="10.0" data-track-index="12"></div>
+      <div id="list-panel-grid" class="clip list-panel-grid"
+           data-start="7.5" data-duration="10.0" data-track-index="13"></div>
+
+      <!-- Title "IN 2026 — Publishers struggle with" — Peter: 7.92-11.10s -->
+      <div id="list-title-wrap" class="clip list-title-wrap"
+           data-start="7.8" data-duration="9.7" data-track-index="14">
+        <span class="list-title-pre" id="list-title-pre">Publishers in</span>
+        <span class="list-title-main" id="list-title-main">
+          20<span class="list-title-accent">26</span>
+        </span>
+        <span class="list-subtitle" id="list-subtitle">struggle with</span>
+      </div>
+
+      <!-- List Item 1: "Adapting to AI" — Peter: 11.10-12.20s -->
+      <div id="list-item-1" class="clip list-item"
+           data-start="11.00" data-duration="6.5" data-track-index="15"
+           style="position: absolute; top: 540px; left: 310px;">
+        <span class="list-item-bullet">!</span>
+        <span class="list-item-text">Adapting to AI</span>
+      </div>
+
+      <!-- List Item 2: "Finding the right niche" — Peter: 13.10-13.84s -->
+      <div id="list-item-2" class="clip list-item"
+           data-start="13.00" data-duration="4.5" data-track-index="16"
+           style="position: absolute; top: 660px; left: 310px;">
+        <span class="list-item-bullet">!</span>
+        <span class="list-item-text">Finding the right niche</span>
+      </div>
+
+      <!-- List Item 3: "Getting reviews" — Peter: 14.18-15.30s -->
+      <div id="list-item-3" class="clip list-item"
+           data-start="14.10" data-duration="3.4" data-track-index="17"
+           style="position: absolute; top: 780px; left: 310px;">
+        <span class="list-item-bullet">!</span>
+        <span class="list-item-text">Getting reviews</span>
+      </div>
+
+      <!-- List Item 4: "Running Amazon ads" — Peter: 15.72-16.76s -->
+      <div id="list-item-4" class="clip list-item"
+           data-start="15.60" data-duration="1.9" data-track-index="18"
+           style="position: absolute; top: 900px; left: 310px;">
+        <span class="list-item-bullet">!</span>
+        <span class="list-item-text">Running Amazon ads</span>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // ===== PHASE 1 HUD (0-7.5s) =====
+      tl.fromTo("#vignette", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 0);
+      tl.fromTo("#blueprint-grid-bg", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 0);
+      tl.fromTo("#accent-top", { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.5 }, 0);
+      tl.fromTo("#accent-bottom", { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.5 }, 0);
+      tl.fromTo("#wordmark", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.5 }, 0.15);
+
+      // ===== PHRASE 1: LESSONS FROM A DECADE (0.00-2.70s) =====
+      tl.fromTo("#phrase-lessons",
+        { opacity: 0, x: -80 },
+        { opacity: 1, x: 0, duration: 0.45, ease: "power3.out" }, 0);
+      tl.fromTo("#phrase-lessons-underline",
+        { scaleX: 0 },
+        { scaleX: 1, duration: 2.0, ease: "none" }, 0.2);
+      tl.to("#phrase-lessons", { opacity: 0, x: 40, duration: 0.30, overwrite: "auto" }, 2.40);
+
+      // ===== PHRASE 2: $5 MILLION (in: 2.55s, Peter says 2.74-3.22s) =====
+      tl.fromTo("#phrase-money",
+        { opacity: 0, scale: 0.4, y: 60 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.55, ease: "back.out(1.8)" }, 2.55);
+      tl.fromTo("#phrase-money-sub",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.4 }, 2.90);
+      tl.to("#phrase-money", { scale: 1.04, duration: 0.7, ease: "sine.inOut" }, 3.10);
+      tl.to("#phrase-money", { opacity: 0, scale: 1.15, duration: 0.35, overwrite: "auto" }, 3.90);
+      tl.to("#phrase-money-sub", { opacity: 0, y: -10, duration: 0.25 }, 3.90);
+
+      tl.fromTo("#particles-money .particle",
+        { opacity: 0, scale: 0 },
+        { opacity: 1, scale: 1, duration: 0.35, stagger: 0.04, ease: "back.out(2)" }, 2.65);
+      tl.to("#particles-money .particle",
+        { opacity: 0, scale: 1.8, y: -50, duration: 0.55, stagger: 0.03 }, 3.60);
+
+      // ===== PHRASE 3: AMAZON KDP (in: 3.75s, Peter says 3.92-4.84s) =====
+      tl.fromTo("#phrase-kdp",
+        { opacity: 0, x: 100, scale: 0.85 },
+        { opacity: 1, x: 0, scale: 1, duration: 0.50, ease: "back.out(1.4)" }, 3.75);
+      tl.to("#phrase-kdp", { opacity: 0, x: -40, duration: 0.30, overwrite: "auto" }, 5.00);
+
+      // ===== PHRASE 4: INTO ONE BOOK (in: 5.40s, Peter says 5.58-6.86s) =====
+      tl.fromTo("#phrase-book",
+        { opacity: 0, scale: 0.55, y: 60 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.70, ease: "back.out(1.6)" }, 5.40);
+      tl.fromTo("#phrase-book-accent",
+        { opacity: 0, scaleX: 0 },
+        { opacity: 1, scaleX: 1, duration: 0.55 }, 5.85);
+      tl.to("#phrase-book", { scale: 1.03, duration: 1.2, ease: "sine.inOut" }, 6.10);
+      tl.to("#phrase-book", { opacity: 0, scale: 1.10, duration: 0.45, overwrite: "auto" }, 7.10);
+      tl.to("#phrase-book-accent", { opacity: 0, duration: 0.35 }, 7.15);
+
+      // ===== PHASE 2 LIST PANEL (7.5s-17.5s) =====
+      // Panel wipe in
+      tl.fromTo("#list-panel",
+        { opacity: 0, scale: 1.02 },
+        { opacity: 1, scale: 1, duration: 0.45, ease: "power2.out" }, 7.50);
+      tl.fromTo("#list-panel-grid",
+        { opacity: 0, scale: 1.1 },
+        { opacity: 1, scale: 1, duration: 0.7, ease: "power2.out" }, 7.55);
+
+      // Title: slide + scale in (Peter says "Most self-publishers in 2026" 7.92-10.22s)
+      tl.fromTo("#list-title-pre",
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.5 }, 7.80);
+      tl.fromTo("#list-title-main",
+        { opacity: 0, scale: 0.7, y: 40 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.75, ease: "back.out(1.6)" }, 7.95);
+      tl.fromTo("#list-subtitle",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.5 }, 10.40);
+
+      // List items: each springs in exactly when Peter says the first word
+      // Item 1: "Adapting to AI" — Peter at 11.10s
+      tl.fromTo("#list-item-1",
+        { opacity: 0, x: -80, scale: 0.9 },
+        { opacity: 1, x: 0, scale: 1, duration: 0.55, ease: "back.out(1.5)" }, 11.00);
+
+      // Item 2: "Finding the right niche" — Peter at 13.10s
+      tl.fromTo("#list-item-2",
+        { opacity: 0, x: -80, scale: 0.9 },
+        { opacity: 1, x: 0, scale: 1, duration: 0.55, ease: "back.out(1.5)" }, 13.00);
+
+      // Item 3: "Getting reviews" — Peter at 14.18s
+      tl.fromTo("#list-item-3",
+        { opacity: 0, x: -80, scale: 0.9 },
+        { opacity: 1, x: 0, scale: 1, duration: 0.55, ease: "back.out(1.5)" }, 14.10);
+
+      // Item 4: "Running Amazon ads" — Peter at 15.72s
+      tl.fromTo("#list-item-4",
+        { opacity: 0, x: -80, scale: 0.9 },
+        { opacity: 1, x: 0, scale: 1, duration: 0.55, ease: "back.out(1.5)" }, 15.60);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
